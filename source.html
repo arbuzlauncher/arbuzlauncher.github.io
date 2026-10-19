@@ -1,0 +1,394 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Arbuz Launcher</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap">
+<style>
+/* Layout: one calm column. Hero splits into copy and a theme preview with an accent picker;
+   a bento grid of five features follows, then an open-source band. Every color is a tonal
+   value derived from one seed hue (--h), the way Android's Monet builds a palette. */
+:root {
+  --h: 15;
+  --font-display: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+
+  --bg: oklch(0.985 0.008 var(--h));
+  --surface-1: oklch(0.955 0.018 var(--h));
+  --surface-2: oklch(0.925 0.026 var(--h));
+  --fg: oklch(0.22 0.02 var(--h));
+  --fg-muted: oklch(0.45 0.025 var(--h));
+  --outline: oklch(0.8 0.025 var(--h));
+  --primary: oklch(0.46 0.17 var(--h));
+  --on-primary: oklch(0.99 0.01 var(--h));
+  --primary-c: oklch(0.91 0.065 var(--h));
+  --on-primary-c: oklch(0.26 0.11 var(--h));
+  --secondary-c: oklch(0.9 0.035 calc(var(--h) + 20));
+  --on-secondary-c: oklch(0.28 0.04 var(--h));
+  --tertiary: oklch(0.5 0.13 calc(var(--h) + 130));
+  --tertiary-c: oklch(0.91 0.07 calc(var(--h) + 130));
+  --on-tertiary-c: oklch(0.27 0.08 calc(var(--h) + 130));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: oklch(0.19 0.012 var(--h));
+    --surface-1: oklch(0.235 0.02 var(--h));
+    --surface-2: oklch(0.285 0.025 var(--h));
+    --fg: oklch(0.93 0.012 var(--h));
+    --fg-muted: oklch(0.76 0.025 var(--h));
+    --outline: oklch(0.42 0.03 var(--h));
+    --primary: oklch(0.8 0.11 var(--h));
+    --on-primary: oklch(0.27 0.1 var(--h));
+    --primary-c: oklch(0.38 0.12 var(--h));
+    --on-primary-c: oklch(0.92 0.05 var(--h));
+    --secondary-c: oklch(0.34 0.04 calc(var(--h) + 20));
+    --on-secondary-c: oklch(0.9 0.03 var(--h));
+    --tertiary: oklch(0.8 0.11 calc(var(--h) + 130));
+    --tertiary-c: oklch(0.38 0.08 calc(var(--h) + 130));
+    --on-tertiary-c: oklch(0.92 0.05 calc(var(--h) + 130));
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: oklch(0.19 0.012 var(--h));
+  --surface-1: oklch(0.235 0.02 var(--h));
+  --surface-2: oklch(0.285 0.025 var(--h));
+  --fg: oklch(0.93 0.012 var(--h));
+  --fg-muted: oklch(0.76 0.025 var(--h));
+  --outline: oklch(0.42 0.03 var(--h));
+  --primary: oklch(0.8 0.11 var(--h));
+  --on-primary: oklch(0.27 0.1 var(--h));
+  --primary-c: oklch(0.38 0.12 var(--h));
+  --on-primary-c: oklch(0.92 0.05 var(--h));
+  --secondary-c: oklch(0.34 0.04 calc(var(--h) + 20));
+  --on-secondary-c: oklch(0.9 0.03 var(--h));
+  --tertiary: oklch(0.8 0.11 calc(var(--h) + 130));
+  --tertiary-c: oklch(0.38 0.08 calc(var(--h) + 130));
+  --on-tertiary-c: oklch(0.92 0.05 calc(var(--h) + 130));
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 8px 40px;
+}
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; padding: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+h1, h2, h3, p { margin: 0; }
+
+.page { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(48px, 8vw, 88px); }
+
+/* top bar */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 500; font-size: 1.2rem; letter-spacing: -0.01em; }
+.logo { width: 34px; height: 34px; flex: none; }
+.logo .rind { fill: var(--tertiary); }
+.logo .flesh { fill: var(--primary); }
+.logo .seed { fill: var(--on-primary); }
+.top-actions { display: flex; align-items: center; gap: 8px; }
+.seg { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--surface-1); }
+.seg button { padding: 6px 13px; border-radius: 999px; font-size: 0.8125rem; font-weight: 600; color: var(--fg-muted); }
+.seg button[aria-pressed="true"] { background: var(--primary-c); color: var(--on-primary-c); }
+.pill-link { display: inline-flex; align-items: center; min-height: 36px; padding: 0 16px; border-radius: 999px; background: var(--surface-1); font-size: 0.875rem; font-weight: 600; text-decoration: none; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 24px; border-radius: 999px; font-weight: 600; text-decoration: none; }
+.btn svg { width: 20px; height: 20px; }
+.btn:hover, .pill-link:hover, .seg button:hover { box-shadow: inset 0 0 0 999px color-mix(in oklab, currentColor 8%, transparent); }
+.btn-fill { background: var(--primary); color: var(--on-primary); }
+.btn-tonal { background: var(--secondary-c); color: var(--on-secondary-c); }
+.btn-inv { background: var(--on-primary); color: var(--primary); }
+.btn-line { color: var(--on-primary); box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--on-primary) 55%, transparent); }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 56px); align-items: center; padding-top: clamp(8px, 3vw, 32px); }
+.hero-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; min-width: 0; }
+.chip { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 999px; background: var(--secondary-c); color: var(--on-secondary-c); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.02em; }
+h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.04; letter-spacing: -0.03em; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--primary); }
+.lead { max-width: 46ch; font-size: 1.125rem; color: var(--fg-muted); }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+
+/* theme preview */
+.stage { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.win { display: grid; grid-template-columns: 64px minmax(0, 1fr); background: var(--surface-1); border-radius: 28px; overflow: hidden; }
+.rail { background: var(--surface-2); display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 0; }
+.rail span { width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; }
+.rail span::before { content: ""; width: 14px; height: 14px; border-radius: 4px; background: var(--fg-muted); opacity: 0.55; }
+.rail span.on { background: var(--primary-c); }
+.rail span.on::before { background: var(--on-primary-c); opacity: 1; }
+.pane { display: flex; flex-direction: column; gap: 10px; padding: 18px; min-width: 0; }
+.pane-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.pane-title { font-family: var(--font-display); font-weight: 500; font-size: 1.15rem; }
+.pane-tag { padding: 3px 10px; border-radius: 999px; background: var(--tertiary-c); color: var(--on-tertiary-c); font-size: 0.75rem; font-weight: 600; }
+.inst { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px; border-radius: 20px; background: var(--bg); }
+.ico { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; }
+.ico::after { content: ""; width: 18px; height: 18px; border-radius: 5px; }
+.ico.a { background: var(--primary-c); } .ico.a::after { background: var(--primary); }
+.ico.b { background: var(--tertiary-c); } .ico.b::after { background: var(--tertiary); }
+.ico.c { background: var(--secondary-c); } .ico.c::after { background: var(--on-secondary-c); opacity: 0.7; }
+.inst b { display: block; font-size: 0.95rem; font-weight: 600; line-height: 1.25; }
+.inst small { display: block; font-size: 0.8rem; color: var(--fg-muted); line-height: 1.3; }
+.play { display: inline-flex; align-items: center; height: 34px; padding: 0 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; background: var(--secondary-c); color: var(--on-secondary-c); }
+.play.main { background: var(--primary); color: var(--on-primary); }
+.picker { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; }
+.picker-label { font-size: 0.875rem; font-weight: 600; }
+.dots { display: flex; gap: 10px; }
+.dot { width: 34px; height: 34px; border-radius: 50%; background: var(--sw); }
+.dot[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--fg); }
+.picker-name { font-size: 0.875rem; color: var(--fg-muted); min-width: 7ch; }
+.note { font-size: 0.875rem; color: var(--fg-muted); max-width: 44ch; }
+
+/* features */
+.section-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 3.6vw, 2.2rem); letter-spacing: -0.02em; margin-bottom: 20px; text-wrap: balance; }
+.grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.card { grid-column: span 2; display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: 28px; background: var(--surface-1); min-width: 0; }
+.card.wide { grid-column: span 3; }
+.card.c-primary { background: var(--primary-c); color: var(--on-primary-c); }
+.card.c-tertiary { background: var(--tertiary-c); color: var(--on-tertiary-c); }
+.ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: color-mix(in oklab, currentColor 12%, transparent); margin-bottom: 8px; }
+.ic svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.card h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.35rem; letter-spacing: -0.01em; }
+.card p { opacity: 0.8; max-width: 38ch; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 8px; }
+.tag { padding: 5px 13px; border-radius: 999px; font-size: 0.8125rem; font-weight: 500; box-shadow: inset 0 0 0 1px color-mix(in oklab, currentColor 28%, transparent); }
+
+/* open source band */
+.open { display: grid; grid-template-columns: minmax(0, 1.3fr) auto; align-items: center; gap: 24px; padding: clamp(28px, 5vw, 52px); border-radius: 36px; background: var(--primary); color: var(--on-primary); }
+.open h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 3.6vw, 2.3rem); letter-spacing: -0.02em; margin-bottom: 10px; text-wrap: balance; }
+.open p { opacity: 0.88; max-width: 48ch; }
+.open .cta { margin: 0; }
+
+footer { display: flex; flex-direction: column; gap: 6px; font-size: 0.8125rem; color: var(--fg-muted); padding-bottom: 8px; }
+footer a { text-underline-offset: 3px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  body, .card, .win, .rail, .inst, .btn, .open, .seg, .chip, .pill-link, .play, .ic { transition: background-color 0.35s ease, color 0.35s ease; }
+}
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card, .card.wide { grid-column: span 1; }
+  .card.wide, .card:last-child { grid-column: span 2; }
+  .open { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .card, .card.wide, .card:last-child { grid-column: auto; }
+  .pane { padding: 14px; }
+  .btn { flex: 1 1 auto; }
+}
+</style>
+
+<div class="page">
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+        <path class="rind" d="M3 11H29A13 13 0 0 1 3 11Z"/>
+        <path class="flesh" d="M6 11H26A10 10 0 0 1 6 11Z"/>
+        <ellipse class="seed" cx="12" cy="15" rx="1.3" ry="2" transform="rotate(-20 12 15)"/>
+        <ellipse class="seed" cx="16" cy="18" rx="1.3" ry="2"/>
+        <ellipse class="seed" cx="20" cy="15" rx="1.3" ry="2" transform="rotate(20 20 15)"/>
+      </svg>
+      <span>Arbuz Launcher</span>
+    </div>
+    <div class="top-actions">
+      <div class="seg" role="group" aria-label="Language">
+        <button type="button" id="lang-ru" aria-pressed="true">RU</button>
+        <button type="button" id="lang-en" aria-pressed="false">EN</button>
+      </div>
+      <a class="pill-link" href="https://github.com/arbuz-top/arbuz-launcher">GitHub</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="chip" data-i18n="chip">Открытый код · GPL-3.0</span>
+      <h1 data-i18n="h1">Лаунчер для Minecraft <em>в твоих цветах</em></h1>
+      <p class="lead" data-i18n="lead">Arbuz Launcher ставит моды и сборки из CurseForge и Modrinth, помогает с вылетами и красит интерфейс в цвета Monet.</p>
+      <div class="cta">
+        <a class="btn btn-fill" href="https://github.com/arbuz-top/arbuz-launcher/releases">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+          <span data-i18n="dl">Скачать</span>
+        </a>
+        <a class="btn btn-tonal" href="https://github.com/arbuz-top/arbuz-launcher" data-i18n="src">Исходный код</a>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="win" aria-hidden="true">
+        <div class="rail"><span class="on"></span><span></span><span></span><span></span></div>
+        <div class="pane">
+          <div class="pane-top">
+            <span class="pane-title" data-i18n="win">Сборки</span>
+            <span class="pane-tag">Monet</span>
+          </div>
+          <div class="inst"><i class="ico a"></i><div><b>Survival</b><small>Fabric · 1.21.1</small></div><span class="play main" data-i18n="play">Играть</span></div>
+          <div class="inst"><i class="ico b"></i><div><b>Create</b><small>Forge · 1.20.1</small></div><span class="play" data-i18n="play">Играть</span></div>
+          <div class="inst"><i class="ico c"></i><div><b>Vanilla</b><small>1.8.9</small></div><span class="play" data-i18n="play">Играть</span></div>
+        </div>
+      </div>
+      <div class="picker">
+        <span class="picker-label" data-i18n="accent">Акцент</span>
+        <div class="dots" id="dots" role="group" aria-label="Accent color">
+          <button type="button" class="dot" data-h="15" style="--sw: oklch(0.62 0.18 15)" aria-pressed="true"></button>
+          <button type="button" class="dot" data-h="150" style="--sw: oklch(0.65 0.16 150)" aria-pressed="false"></button>
+          <button type="button" class="dot" data-h="245" style="--sw: oklch(0.62 0.15 245)" aria-pressed="false"></button>
+          <button type="button" class="dot" data-h="295" style="--sw: oklch(0.58 0.17 295)" aria-pressed="false"></button>
+          <button type="button" class="dot" data-h="65" style="--sw: oklch(0.72 0.14 65)" aria-pressed="false"></button>
+        </div>
+        <span class="picker-name" id="seed-name">Арбуз</span>
+      </div>
+      <p class="note" data-i18n="note">Весь интерфейс строится от одного акцента. Выбери свой.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title" data-i18n="inside">Что внутри</h2>
+    <div class="grid">
+      <article class="card wide c-primary">
+        <div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3l1.9 5.1L18 10l-5.1 1.9L11 17l-1.9-5.1L4 10l5.1-1.9L11 3z"/><path d="M19 15v5M16.5 17.5h5"/></svg></div>
+        <h3 data-i18n="f1t">ИИ-помощник</h3>
+        <p data-i18n="f1p">Помогает собрать сборку и разобраться, почему игра вылетает.</p>
+      </article>
+      <article class="card wide c-tertiary">
+        <div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H17a4 4 0 0 0 4-4c0-4.4-4-8.2-9-8.2z"/><circle cx="7.5" cy="11.5" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/></svg></div>
+        <h3 data-i18n="f2t">Темы Monet</h3>
+        <p data-i18n="f2p">Цвета интерфейса строятся от одного акцента, как в Material You. Есть и другие темы.</p>
+      </article>
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg></div>
+        <h3 data-i18n="f3t">CurseForge и Modrinth</h3>
+        <p data-i18n="f3p">Ищи и ставь моды и сборки из обоих каталогов, не выходя из лаунчера.</p>
+      </article>
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg></div>
+        <h3 data-i18n="f4t">Любой аккаунт</h3>
+        <p data-i18n="f4p">Войди через Microsoft, Ely.by или LittleSkin либо играй офлайн.</p>
+        <div class="tags"><span class="tag">Microsoft</span><span class="tag">Ely.by</span><span class="tag">LittleSkin</span><span class="tag" data-i18n="offline">Офлайн</span></div>
+      </article>
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></div>
+        <h3 data-i18n="f5t">Много языков</h3>
+        <p data-i18n="f5p">Интерфейс доступен на многих языках.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="open">
+    <div>
+      <h2 data-i18n="ot">Открытый код под GPL-3.0</h2>
+      <p data-i18n="op">Исходники, релизы и обсуждения живут на GitHub. Нашёл ошибку или есть идея, открой issue.</p>
+    </div>
+    <div class="cta">
+      <a class="btn btn-inv" href="https://github.com/arbuz-top/arbuz-launcher" data-i18n="repo">Репозиторий</a>
+      <a class="btn btn-line" href="https://github.com/arbuz-top/arbuz-launcher/issues" data-i18n="bug">Сообщить об ошибке</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>Arbuz Launcher · GPL-3.0 · <a href="https://github.com/arbuz-top/arbuz-launcher">github.com/arbuz-top/arbuz-launcher</a></span>
+    <span data-i18n="legal">Minecraft — торговая марка Mojang Studios. Arbuz Launcher не связан с Mojang Studios и Microsoft.</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var EN = {
+    chip: "Open source · GPL-3.0",
+    h1: "A Minecraft launcher <em>in your colors</em>",
+    lead: "Arbuz Launcher installs mods and modpacks from CurseForge and Modrinth, helps with crashes, and paints the interface in Monet colors.",
+    dl: "Download",
+    src: "Source code",
+    win: "Instances",
+    play: "Play",
+    accent: "Accent",
+    note: "The whole interface is built from one accent. Pick yours.",
+    inside: "What's inside",
+    f1t: "AI helper",
+    f1p: "Helps you put a modpack together and figure out why the game crashes.",
+    f2t: "Monet themes",
+    f2p: "Interface colors are built from a single accent, like Material You. Other themes are included.",
+    f3t: "CurseForge and Modrinth",
+    f3p: "Search and install mods and modpacks from both catalogs without leaving the launcher.",
+    f4t: "Any account",
+    f4p: "Sign in with Microsoft, Ely.by or LittleSkin, or play offline.",
+    offline: "Offline",
+    f5t: "Many languages",
+    f5p: "The interface is available in many languages.",
+    ot: "Open source under GPL-3.0",
+    op: "Source code, releases and discussions live on GitHub. Found a bug or have an idea? Open an issue.",
+    repo: "Repository",
+    bug: "Report a bug",
+    legal: "Minecraft is a trademark of Mojang Studios. Arbuz Launcher is not affiliated with Mojang Studios or Microsoft."
+  };
+  var SEEDS = {
+    15: { ru: "Арбуз", en: "Watermelon" },
+    150: { ru: "Мята", en: "Mint" },
+    245: { ru: "Океан", en: "Ocean" },
+    295: { ru: "Слива", en: "Plum" },
+    65: { ru: "Мёд", en: "Honey" }
+  };
+
+  var texts = Array.prototype.slice.call(document.querySelectorAll("[data-i18n]"));
+  texts.forEach(function (el) { el.setAttribute("data-ru", el.innerHTML); });
+  var dots = Array.prototype.slice.call(document.querySelectorAll(".dot"));
+  var nameEl = document.getElementById("seed-name");
+  var btnRu = document.getElementById("lang-ru");
+  var btnEn = document.getElementById("lang-en");
+
+  var lang = "ru";
+  var hue = 15;
+  try {
+    if (localStorage.getItem("arbuz-lang") === "en") lang = "en";
+    var saved = Number(localStorage.getItem("arbuz-hue"));
+    if (SEEDS[saved]) hue = saved;
+  } catch (e) {}
+
+  function render() {
+    document.documentElement.lang = lang;
+    document.documentElement.style.setProperty("--h", String(hue));
+    texts.forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      el.innerHTML = lang === "en" && EN[key] !== undefined ? EN[key] : el.getAttribute("data-ru");
+    });
+    dots.forEach(function (d) {
+      var h = Number(d.getAttribute("data-h"));
+      d.setAttribute("aria-pressed", h === hue ? "true" : "false");
+      d.setAttribute("aria-label", SEEDS[h][lang]);
+      d.setAttribute("title", SEEDS[h][lang]);
+    });
+    nameEl.textContent = SEEDS[hue][lang];
+    btnRu.setAttribute("aria-pressed", lang === "ru" ? "true" : "false");
+    btnEn.setAttribute("aria-pressed", lang === "en" ? "true" : "false");
+  }
+
+  function remember(key, value) {
+    try { localStorage.setItem(key, String(value)); } catch (e) {}
+  }
+
+  dots.forEach(function (d) {
+    d.addEventListener("click", function () {
+      hue = Number(d.getAttribute("data-h"));
+      remember("arbuz-hue", hue);
+      render();
+    });
+  });
+  btnRu.addEventListener("click", function () { lang = "ru"; remember("arbuz-lang", lang); render(); });
+  btnEn.addEventListener("click", function () { lang = "en"; remember("arbuz-lang", lang); render(); });
+
+  render();
+})();
+</script>
+
+</body></html>
